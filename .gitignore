@@ -1,0 +1,6 @@
+/.vscode
+*.data
+*.plt
+*.out
+*__pycache__
+.history_sta

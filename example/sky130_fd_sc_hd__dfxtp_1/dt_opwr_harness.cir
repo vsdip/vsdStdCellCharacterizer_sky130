@@ -1,0 +1,120 @@
+Test Harness  for sky130_fd_sc_hd__dfxtp_1
+.include 'sky130nm.lib' 
+.include 'example/sky130_fd_sc_hd__dfxtp_1/sky130_fd_sc_hd__dfxtp_1.spice'
+    .options savecurrents
+    X1 CLK D VGND VNB VPB VPWR Q sky130_fd_sc_hd__dfxtp_1
+    * Power Supplies
+    VVPWR VPWR 0 DC 1.8
+VVPB VPB 0 DC 1.8
+VVGND VGND 0 DC 0
+VVNB VNB 0 DC 0
+    * Signal Supplies
+    VD D 0 PULSE(0 1.8 6n 0.01n 0.01n 10ns 20ns)
+VCLK CLK 0 PULSE(0 1.8 0 0.01n 0.01n 15ns 30ns)
+    * CLoad
+    CLoad Q 0 1f
+    * Control Generations
+    .control
+    
+    shell rm example/sky130_fd_sc_hd__dfxtp_1/data/Q/timing/input_transition.txt
+    shell rm example/sky130_fd_sc_hd__dfxtp_1/data/Q/timing/cell_fall.txt
+    shell rm example/sky130_fd_sc_hd__dfxtp_1/data/Q/timing/cell_rise.txt
+    shell rm example/sky130_fd_sc_hd__dfxtp_1/data/Q/timing/fall_transition.txt
+    shell rm example/sky130_fd_sc_hd__dfxtp_1/data/Q/timing/rise_transition.txt
+    shell rm example/sky130_fd_sc_hd__dfxtp_1/data/Q/timing/rise_power.txt
+    shell rm example/sky130_fd_sc_hd__dfxtp_1/data/Q/timing/fall_power.txt
+    let run  = 0 
+    foreach in_delay 0.01n 0.023n 0.0531329n 0.122474n 0.282311n 0.650743n 1.5n
+    * Initiating Text Files in folder data
+    echo "input_transition:$in_delay" >> example/sky130_fd_sc_hd__dfxtp_1/data/Q/timing/input_transition.txt
+    echo "input_transition:$in_delay" >> example/sky130_fd_sc_hd__dfxtp_1/data/Q/timing/cell_fall.txt
+    echo "input_transition:$in_delay" >> example/sky130_fd_sc_hd__dfxtp_1/data/Q/timing/cell_rise.txt
+    echo "input_transition:$in_delay" >> example/sky130_fd_sc_hd__dfxtp_1/data/Q/timing/fall_transition.txt
+    echo "input_transition:$in_delay" >> example/sky130_fd_sc_hd__dfxtp_1/data/Q/timing/rise_transition.txt
+    echo "input_transition:$in_delay" >> example/sky130_fd_sc_hd__dfxtp_1/data/Q/timing/rise_power.txt
+    echo "input_transition:$in_delay" >> example/sky130_fd_sc_hd__dfxtp_1/data/Q/timing/fall_power.txt
+    * 1.666 to match the slew rate
+    let actual_rtime = $in_delay*1.666   
+
+    * Input Vector - Load Cap values(index2)
+    foreach out_cap 0.0005p 0.0012105800p 0.002931p 0.00709641p 0.0171815p 0.0415991p 0.100718p
+        reset
+        
+        * Changing the V2 Supply Rise time as per the Input Rise Time vector
+        alter @VCLK[pulse] = [ 0 1.8 0 $&actual_rtime $&actual_rtime 15ns 30ns ]
+        
+        * Changing the C1 value as per the foreach list
+        alter CLOAD $out_cap
+        
+        tran 0.01n 100ns
+        run
+
+        reset
+        * Verification of INPUT RISE TIME
+        meas tran ts1 when v(CLK)=1.44 RISE=1 
+        meas tran ts2 when v(CLK)=0.36 RISE=1
+        meas tran ts3 when v(CLK)=1.44 FALL=1 
+        meas tran ts4 when v(CLK)=0.36 FALL=1
+        let RISE_IN_SLEW = (ts1-ts2)/1e-09
+        let FALL_IN_SLEW = (ts4-ts3)/1e-09
+        echo "actual_rise_slew:$&RISE_IN_SLEW" >> example/sky130_fd_sc_hd__dfxtp_1/data/Q/timing/input_transition.txt
+        echo "actual_fall_slew:$&FALL_IN_SLEW" >> example/sky130_fd_sc_hd__dfxtp_1/data/Q/timing/input_transition.txt
+
+
+        print run
+        * Measuring Cell Fall Time @ 50% of VDD(1.8V) 
+        meas tran cfall trig v(CLK) val=0.9 rise=3 targ v(Q) val=0.9 fall=1
+        let cfall = cfall/1e-09
+        print cfall
+        echo "out_cap:$out_cap:cell_fall:$&cfall" >> example/sky130_fd_sc_hd__dfxtp_1/data/Q/timing/cell_fall.txt
+
+        * Measuring Cell Rise Time @ 50% of VDD(1.8V)
+        meas tran crise trig v(CLK) val=0.9 rise=2 targ v(Q) val=0.9 rise=1
+        let crise = crise/1e-09
+        print crise
+        echo "out_cap:$out_cap:cell_rise:$&crise" >> example/sky130_fd_sc_hd__dfxtp_1/data/Q/timing/cell_rise.txt
+
+        * Measuring Fall transition Time @ 80-20% of VDD(1.8V)
+        meas tran fall_tran trig v(Q) val=1.44 fall=1 targ v(Q) val=0.36 fall=1
+        meas tran fall_tran trig v(Q) val=1.44 fall=1 targ v(Q) val=0.36 fall=2
+        let fall_tran = fall_tran/1n
+        print fall_tran
+        echo "out_cap:$out_cap:fall_transition:$&fall_tran" >> example/sky130_fd_sc_hd__dfxtp_1/data/Q/timing/fall_transition.txt
+        
+        * Measuring Rise transition Time @ 20-80% of VDD(1.8V) 
+        meas tran rt1 when v(Q)=1.44 RISE=1 
+        meas tran rt2 when v(Q)=0.36 RISE=1
+        let rise_tran = ((rt1-rt2)/1e-09)
+        print rise_tran
+        echo "out_cap:$out_cap:rise_transition:$&rise_tran" >> example/sky130_fd_sc_hd__dfxtp_1/data/Q/timing/rise_transition.txt
+        let pos_unate = 1
+        if pos_unate
+            * Measuring Rising Power if Positive Unate
+            meas tran pt1 when v(CLK)=0.9 RISE=2
+            meas tran pt2 when v(Q)=1.79 RISE=1
+            * To avoid error due to peaks
+            if pt1 > pt2 
+                meas tran pt2 when v(CLK)=1.79 RISE=3
+            end
+            let pwr_stc1 = (@CLOAD[i])*Q 
+            meas tran pwr_swt1 INTEG pwr_stc1 from=pt1 to=pt2
+            let pwr_swt1 = pwr_swt1/1p
+            echo "out_cap:$out_cap:power_switch:$&pwr_swt1" >> example/sky130_fd_sc_hd__dfxtp_1/data/Q/timing/rise_power.txt
+
+            * Measuring Falling Power if Positive Unate
+            meas tran pt1 when v(CLK)=0.9 RISE=2
+            meas tran pt2 when v(Q)=0.1 FALL=1
+            meas tran pt2 when v(Q)=0.1 FALL=2
+            let pwr_stc2 = (@CLOAD[i])*Q - (@(VVPWR#branch)*VPWR)
+            meas tran pwr_swt2 INTEG pwr_stc2 from=pt1 to=pt2
+            let pwr_swt2 = pwr_swt2/1p
+            echo "out_cap:$out_cap:power_switch:$&pwr_swt2" >> example/sky130_fd_sc_hd__dfxtp_1/data/Q/timing/fall_power.txt
+        end
+        * plot clk d+2 q+4
+    end
+    end
+    rusage 
+quit
+    rusage
+    quit
+    .endc

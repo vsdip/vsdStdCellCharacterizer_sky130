@@ -1,0 +1,42 @@
+Test Harness  for sky130_fd_sc_hd__dfxtp_1
+.include 'sky130nm.lib' 
+.include 'example/sky130_fd_sc_hd__dfxtp_1/sky130_fd_sc_hd__dfxtp_1.spice'
+    .options savecurrents
+    X1 CLK D VGND VNB VPB VPWR Q sky130_fd_sc_hd__dfxtp_1
+    * Power Supplies
+    VVPWR VPWR 0 DC 1.8
+VVPB VPB 0 DC 1.8
+VVGND VGND 0 DC 0
+VVNB VNB 0 DC 0
+    * Signal Supplies
+    VCLK CLK 0 PULSE(0 1.8 6n 0.01n 0.01n 10ns 20ns)
+VD D 0 0
+    * CLoad
+    CLoad Q 0 1f
+    * Control Generations
+    .control
+     shell rm example/sky130_fd_sc_hd__dfxtp_1/data/CLK/input_caps/input_pins_caps.txt
+            foreach case 1.8 0
+    if $case=0
+        * Fall Condition
+        reset
+        alter @VCLK[PWL] = [ 0 1.8 1.25n 0.9 2.5n 0 ]
+        tran 0.01n 2.5n
+        run
+        let fall_caps = abs(avg(vCLK#branch))*2.5n/(1.8)
+        let fall_cap = fall_caps[length(fall_caps)-1]/1p
+        echo "CLK:fall_capacitance:$&fall_cap" >> example/sky130_fd_sc_hd__dfxtp_1/data/CLK/input_caps/input_pins_caps.txt
+    else
+        * Rise Condition
+        reset
+        alter @VCLK[PWL] = [ 0ns 0 1.25ns 0.9 2.5ns 1.8 ]
+        tran 0.01n 2.5n
+        run
+        let rise_caps = abs(avg(vCLK#branch))*2.5n/(1.8)
+        let rise_cap = rise_caps[length(rise_caps)-1]/1p
+        echo "CLK:rise_capacitance:$&rise_cap" >> example/sky130_fd_sc_hd__dfxtp_1/data/CLK/input_caps/input_pins_caps.txt 
+    end
+    end
+    rusage
+    quit
+    .endc

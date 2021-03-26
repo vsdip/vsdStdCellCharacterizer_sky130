@@ -1,0 +1,108 @@
+Test Harness  for sky130_fd_sc_hd__dfxtp_1
+.include 'sky130nm.lib' 
+.include 'example/sky130_fd_sc_hd__dfxtp_1/sky130_fd_sc_hd__dfxtp_1.spice'
+    .options savecurrents
+    X1 CLK D VGND VNB VPB VPWR Q sky130_fd_sc_hd__dfxtp_1
+    * Power Supplies
+    VVPWR VPWR 0 DC 1.8
+VVPB VPB 0 DC 1.8
+VVGND VGND 0 DC 0
+VVNB VNB 0 DC 0
+    * Signal Supplies
+    VD D 0 PULSE(0 1.8 6n 0.01n 0.01n 10ns 20ns)
+VCLK CLK 0 PULSE(0 1.8 0 0.01n 0.01n 15ns 30ns)
+    * CLoad
+    CLoad Q 0 1f
+    * Control Generations
+    .control
+    let verbose = 0
+    shell rm example/sky130_fd_sc_hd__dfxtp_1/data/D/hold/rise_hold.txt
+    foreach in_transition 0.01n 0.5n 1.5n
+    echo "d_tran:$in_transition" >> example/sky130_fd_sc_hd__dfxtp_1/data/D/hold/rise_hold.txt
+    foreach clk_tran 0.01n 0.5n 1.5n
+        let clk_base_t = 6n
+        let clk_high_t = clk_base_t + $clk_tran*1.666
+
+        if $in_transition = $clk_tran
+            let off_time = 0.4n
+        else
+            let  off_time = 0.0
+        end
+        let d_base_t_rise = clk_base_t - 4n
+        let d_high_t_rise = d_base_t_rise + $in_transition*1.66
+        * Swing Limit
+        let lower_t = -3n
+        let upper_t = 2n
+        let mid_point = (lower_t + upper_t)/2
+        let initial = 0
+        let runs = 20
+        let tpd_ref = 0
+        dowhile initial < runs
+            * Reference Simulation
+            if initial = 0
+                let mid_point = 6n
+            end
+            let d_base_t_fall = clk_high_t + mid_point
+            let d_high_t_fall = d_base_t_fall + $in_transition*1.666
+            alter @VD[PWL] = [ 0 1.8 $&d_base_t_rise 1.8 $&d_high_t_rise 0 $&d_base_t_fall 0 $&d_high_t_fall 1.8]
+            alter @VCLK[PWL] = [ 0 0 0.2n 1.8 1.5n 0 $&clk_base_t 0 $&clk_high_t 1.8 ]
+            tran 0.005n 20n
+            run
+            reset
+            if verbose = 1
+                plot q d clk
+            end
+            let tpd = 0
+            * measurement commands for thold and Propagation Delay(CLK-Q)
+            meas tran thold trig v(CLK) val=0.9 RISE=2 targ v(D) val=0.9 RISE=1
+            meas tran tpd trig v(CLK) val=0.9 RISE=2 targ v(Q) val=0.9 FALL=1
+            meas tran tpd trig v(CLK) val=0.9 RISE=2 targ v(Q) val=0.9 FALL=2
+            * Reference Simulation
+            if initial = 0
+                let tpd_ref = tpd
+                let tpd_ref_dis = tpd_ref/1n
+                let mid_point = (lower_t + upper_t)/2
+                echo "tpd_ref: $&tpd_ref_dis" >> example/sky130_fd_sc_hd__dfxtp_1/data/D/hold/rise_hold.txt
+            else
+                if verbose = 1
+                    echo "Iteration: $&initial" >> example/sky130_fd_sc_hd__dfxtp_1/data/D/hold/rise_hold.txt
+                    echo "in_Upper_Bound:$&upper_t:in_Lower_Bound:$&lower_t" >> example/sky130_fd_sc_hd__dfxtp_1/data/D/hold/rise_hold.txt
+                end
+            * Changing the upper and lower values as per the results
+                let tpd_goal = 1.1*tpd_ref
+                let error = (tpd-tpd_goal)/tpd_goal
+                if tpd = 0
+                    let lower_t = mid_point
+                else
+                    if tpd_goal < tpd
+                        let lower_t = mid_point
+                    end
+                    if tpd_goal > tpd
+                        let upper_t = mid_point
+                    end
+                end
+                * To Stop the loop if error is low
+                if error > 0
+                    if error < 0.07m
+                        let initial = 1000
+                    end
+                end
+            end
+            let initial = initial + 1
+            let mid_point = (lower_t + upper_t)/2
+            let tpd_num=tpd/1n
+            let thold_num=thold/1n
+            if verbose = 1
+                echo "final_Upper_Bound:$&upper_t:final_Upper_Bound_Lower_Bound:$&lower_t" >> example/sky130_fd_sc_hd__dfxtp_1/data/D/hold/rise_hold.txt
+                echo "clk_tran:$clk_tran:pdelay_clkout:$&tpd_num:hold_time:$&thold_num:error_pdelay:$&error" >> example/sky130_fd_sc_hd__dfxtp_1/data/D/hold/rise_hold.txt
+            end
+        end
+        if verbose = 0
+            echo "clk_tran:$clk_tran:pdelay_clkout:$&tpd_num:hold_time:$&thold_num:error_pdelay:$&error" >> example/sky130_fd_sc_hd__dfxtp_1/data/D/hold/rise_hold.txt
+        end
+    end
+    end
+    quit
+    rusage
+    quit
+    .endc

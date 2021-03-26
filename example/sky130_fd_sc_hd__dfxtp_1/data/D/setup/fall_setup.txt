@@ -1,0 +1,21 @@
+d_tran:0.01n
+tpd_ref: 0.30297
+clk_tran:0.01n:pdelay_clkout:0.333264:setup_time:0.09342:error_pdelay:-8.76174E-06
+tpd_ref: 0.446034
+clk_tran:0.5n:pdelay_clkout:0.490678:setup_time:-0.03495:error_pdelay:8.28311E-05
+tpd_ref: 0.58193
+clk_tran:1.5n:pdelay_clkout:0.640186:setup_time:-0.14777:error_pdelay:9.90435E-05
+d_tran:0.5n
+tpd_ref: 0.302972
+clk_tran:0.01n:pdelay_clkout:0.333275:setup_time:0.29013:error_pdelay:1.67432E-05
+tpd_ref: 0.446037
+clk_tran:0.5n:pdelay_clkout:0.490653:setup_time:0.1549:error_pdelay:2.54973E-05
+tpd_ref: 0.581935
+clk_tran:1.5n:pdelay_clkout:0.640157:setup_time:0.03661:error_pdelay:4.5694E-05
+d_tran:1.5n
+tpd_ref: 0.302979
+clk_tran:0.01n:pdelay_clkout:0.333298:setup_time:0.55311:error_pdelay:6.07902E-05
+tpd_ref: 0.446044
+clk_tran:0.5n:pdelay_clkout:0.490649:setup_time:0.4126:error_pdelay:1.20249E-06
+tpd_ref: 0.581949
+clk_tran:1.5n:pdelay_clkout:0.640125:setup_time:0.28698:error_pdelay:-2.88841E-05

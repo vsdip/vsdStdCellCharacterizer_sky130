@@ -1,0 +1,21 @@
+d_tran:0.01n
+tpd_ref: 0.302971
+clk_tran:0.01n:pdelay_clkout:0.333369:hold_time:-0.03522:error_pdelay:0.000302189
+tpd_ref: 0.446036
+clk_tran:0.5n:pdelay_clkout:0.490694:hold_time:0.04157:error_pdelay:0.000110713
+tpd_ref: 0.581934
+clk_tran:1.5n:pdelay_clkout:0.640122:hold_time:0.08212:error_pdelay:-8.31084E-06
+d_tran:0.5n
+tpd_ref: 0.302972
+clk_tran:0.01n:pdelay_clkout:0.333303:hold_time:-0.14156:error_pdelay:0.00010205
+tpd_ref: 0.446037
+clk_tran:0.5n:pdelay_clkout:0.490614:hold_time:-0.06252:error_pdelay:-5.54581E-05
+tpd_ref: 0.581937
+clk_tran:1.5n:pdelay_clkout:0.640004:hold_time:-0.02095:error_pdelay:-0.000196772
+d_tran:1.5n
+tpd_ref: 0.302976
+clk_tran:0.01n:pdelay_clkout:0.333305:hold_time:-0.20613:error_pdelay:9.32867E-05
+tpd_ref: 0.446043
+clk_tran:0.5n:pdelay_clkout:0.490704:hold_time:-0.12763:error_pdelay:0.000115602
+tpd_ref: 0.581948
+clk_tran:1.5n:pdelay_clkout:0.640119:hold_time:-0.0879:error_pdelay:-3.65231E-05

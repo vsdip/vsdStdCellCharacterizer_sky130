@@ -1,0 +1,2 @@
+CLK:rise_capacitance:0.00235802
+CLK:fall_capacitance:0.00234824

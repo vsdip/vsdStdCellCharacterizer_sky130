@@ -1,0 +1,92 @@
+VERSION 5.7 ;
+  NOWIREEXTENSIONATPIN ON ;
+  DIVIDERCHAR "/" ;
+  BUSBITCHARS "[]" ;
+MACRO sky130_fd_sc_hd__buf_1
+  CLASS CORE ;
+  FOREIGN sky130_fd_sc_hd__buf_1 ;
+  ORIGIN 0.000 0.000 ;
+  SIZE 1.380 BY 2.720 ;
+  SYMMETRY X Y R90 ;
+  SITE unithd ;
+  PIN A
+    DIRECTION INPUT ;
+    USE SIGNAL ;
+    ANTENNAGATEAREA 0.196500 ;
+    PORT
+      LAYER li1 ;
+        RECT 0.105 0.985 0.445 1.355 ;
+    END
+  END A
+  PIN VGND
+    DIRECTION INOUT ;
+    USE GROUND ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER li1 ;
+        RECT 0.525 0.085 0.855 0.465 ;
+        RECT 0.000 -0.085 1.380 0.085 ;
+      LAYER mcon ;
+        RECT 0.145 -0.085 0.315 0.085 ;
+        RECT 0.605 -0.085 0.775 0.085 ;
+        RECT 1.065 -0.085 1.235 0.085 ;
+      LAYER met1 ;
+        RECT 0.000 -0.240 1.380 0.240 ;
+    END
+  END VGND
+  PIN VNB
+    DIRECTION INOUT ;
+    USE GROUND ;
+    PORT
+      LAYER pwell ;
+        RECT 0.155 -0.085 0.325 0.085 ;
+    END
+  END VNB
+  PIN VPB
+    DIRECTION INOUT ;
+    USE POWER ;
+    PORT
+      LAYER nwell ;
+        RECT -0.190 1.305 1.570 2.910 ;
+    END
+  END VPB
+  PIN VPWR
+    DIRECTION INOUT ;
+    USE POWER ;
+    SHAPE ABUTMENT ;
+    PORT
+      LAYER li1 ;
+        RECT 0.000 2.635 1.380 2.805 ;
+        RECT 0.525 1.875 0.855 2.635 ;
+      LAYER mcon ;
+        RECT 0.145 2.635 0.315 2.805 ;
+        RECT 0.605 2.635 0.775 2.805 ;
+        RECT 1.065 2.635 1.235 2.805 ;
+      LAYER met1 ;
+        RECT 0.000 2.480 1.380 2.960 ;
+    END
+  END VPWR
+  PIN X
+    DIRECTION OUTPUT ;
+    USE SIGNAL ;
+    ANTENNADIFFAREA 0.340600 ;
+    PORT
+      LAYER li1 ;
+        RECT 1.025 1.560 1.295 2.465 ;
+        RECT 1.115 0.760 1.295 1.560 ;
+        RECT 1.035 0.255 1.295 0.760 ;
+    END
+  END X
+  OBS
+      LAYER li1 ;
+        RECT 0.165 1.705 0.345 2.465 ;
+        RECT 0.165 1.535 0.840 1.705 ;
+        RECT 0.670 1.390 0.840 1.535 ;
+        RECT 0.670 1.060 0.945 1.390 ;
+        RECT 0.670 0.805 0.840 1.060 ;
+        RECT 0.175 0.635 0.840 0.805 ;
+        RECT 0.175 0.255 0.345 0.635 ;
+  END
+END sky130_fd_sc_hd__buf_1
+END LIBRARY
+

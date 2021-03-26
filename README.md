@@ -66,7 +66,7 @@ The setup-time is measured using the bisection method. In this method, the refer
 **Step 0: Perquisites based on Ubuntu OS**      
   * Software Requirements: NGSPICE and python 3   
   * Numpy module download: `$ pip3 install numpy`   
-  * Clone the repository: `$ git clone https://github.com/harshsrigh/timing_archs.git`        
+  * Clone the repository: `$ git clone https://github.com/vsdip/vsdStdCellCharacterizer_sky130.git`        
   * Change Directory to timing_arch: `$ cd vsdStdCellCharacterizer_sky130`
   * All the commands need to be run from the root directory i.e `user_name@PC_name:~/vsdStdCellCharacterizer_sky130$`
 

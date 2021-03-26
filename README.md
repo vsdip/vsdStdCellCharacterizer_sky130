@@ -37,7 +37,7 @@ Timing Views generation involves measurement of propagation delays (between inpu
 These measurement is done at a particular event and these event are generally defined in the liberty file as the threshold points.
 ### Delays and Transition Time measurement    
 
-<p align="center"><img src="images/rise_fall_wave.jpg" alt="Delays, Transition Time" width="300" /></p>
+<p align="center"><img src="images/rise_fall_wave.jpg" alt="Delays, Transition Time" width="340" /></p>
 
 NGSPICE Control Commands:   
 
@@ -154,6 +154,6 @@ Enter command into terminal: `$ python3 dff.py -lef example/sky130_fd_sc_hd__dfx
 ## Future Works:
 * Implement tri-state and multiple output cells measurement.
 * Try to generate number of timing arcs dynamically.
-* Implement removal, recovery time and minimum pulse width measurement for sequential cells. 
+* Implement removal time, recovery time and minimum pulse width measurement for sequential cells. 
 
 

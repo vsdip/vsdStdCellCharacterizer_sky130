@@ -90,7 +90,7 @@ The setup-time is measured using the bisection method. In this method, the refer
     <img src="images/script_out.png" alt="script_out" width="350"/>
 
 ### Result Comparison between Skywater lib data and script data
-[Skywater Liberty file Buf_1 ](sta_results/sky_mod1.lib)    
+[Skywater Liberty file Buf_1 ](sta_results/sky130_fd_sc_hd__typical.lib)    
 <img src="images/skylib_buf.png" alt="script_out" width="650"/>   
 [Generated Liberty file Buf_1 ](example/sky130_fd_sc_hd__buf_1/timing.lib)    
 <img src="images/vsdlib_buf.png" alt="script_out" width="650"/>   
@@ -111,7 +111,7 @@ Enter command into terminal: `$ python3 dff.py -lef example/sky130_fd_sc_hd__dfx
 
 ### Result Comparison between Skywater lib data and script data
 
-[Skywater Liberty file DFF_1 ](sta_results/sky_mod1.lib)      
+[Skywater Liberty file DFF_1 ](sta_results/sky130_fd_sc_hd__typical.lib)      
 <img src="images/skylib_dff.png" alt="script_out" width="450"/>      
 
 [Generated Liberty file DFF_1 ](example/sky130_fd_sc_hd__dfxtp_1/timing.lib)     

@@ -1,0 +1,4 @@
+Student name,Email ID,Uni/Org/College,Circuit Name,Circuit Type,Spice File Name,Input pins,Output pins,Output function,Server Path to cir.cout,Server Path to .sub files
+Sumanto,xyz@aol.com,IITB,2 input NAND,Digital,CMOS_NAND.sub,"inputa,inputb",out,out=~(inputa.inputb),https://static.fossee.in/esim/eSim_circuit_design_marathon/NAND/CMOS_NAND_Gate.cir.out,"https://static.fossee.in/esim/eSim_circuit_design_marathon/NAND/CMOS_NAND.sub, https://raw.githubusercontent.com/kunalg123/flipflop_design/master/NMOS-180nm.lib, https://raw.githubusercontent.com/kunalg123/flipflop_design/master/PMOS-180nm.lib"
+Bharghav,poc@kl.in,IISC,RC,Analog,NA,in,out,NA,https://static.fossee.in/esim/eSim_circuit_design_marathon/RC/RC.cir.out,NA
+Sumit ,in@out.com,IITK,Inverting Amplifier,Analog,lm741.sub,in,out,NA,https://static.fossee.in/esim/eSim_circuit_design_marathon/Inverting/InvertingAmplifier.cir.out,https://static.fossee.in/esim/eSim_circuit_design_marathon/Inverting/lm_741.sub

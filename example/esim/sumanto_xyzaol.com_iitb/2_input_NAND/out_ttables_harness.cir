@@ -1,0 +1,40 @@
+
+    .include sky130nm.lib
+    * /home/saurabh/esim-workspace/cmos_nand_gate/cmos_nand_gate.cir
+
+.include example/esim/sumanto_xyzaol.com_iitb/2_input_NAND/CMOS_NAND.sub
+v1  inputa gnd pulse(0 5 0 0 0 17m 33m)
+v2  inputb gnd pulse(0 5 0 0 0 10m 20m)
+* u2  inputb plot_v1
+* u1  inputa plot_v1
+* u3  out plot_v1
+x1 inputa inputb out CMOS_NAND
+* .tran 0.1e-03 100e-03 0e-00
+
+* Control Statements 
+
+    CLOAD out 0 1f
+    .control
+    
+        shell rm example/esim/sumanto_xyzaol.com_iitb/2_input_NAND/data/out.txt
+        echo "inputa inputb OUT"  >> example/esim/sumanto_xyzaol.com_iitb/2_input_NAND/data/out.txt
+        foreach inputain 0 5 
+	foreach inputbin 0 5 
+
+        let out_val = 5
+        alter @v1[PWL] = [ 0 $inputain ] 
+alter @v2[PWL] = [ 0 $inputbin ] 
+
+                tran 0.01n 1n
+        run
+        reset 
+        let out_last = v(out)[length(v(out))-1]
+        if out_last < 2.5
+           let out_val = 0
+        end
+        echo "$inputain $inputbin $&out_val" >> example/esim/sumanto_xyzaol.com_iitb/2_input_NAND/data/out.txt
+        end
+ 	end
+    
+    quit
+    .endc

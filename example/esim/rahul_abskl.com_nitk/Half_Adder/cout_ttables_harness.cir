@@ -1,0 +1,43 @@
+
+    .include sky130nm.lib
+    * /home/saurabh/esim-workspace/cmos_nand_gate/cmos_nand_gate.cir
+* * * .include sky130nm.lib
+.include example/esim/rahul_abskl.com_nitk/Half_Adder/xor.sub
+.include example/esim/rahul_abskl.com_nitk/Half_Adder/and.sub
+v1  A gnd pulse(0 1.8 0 0 0 17m 33m)
+v2  B gnd pulse(0 1.8 0 0 0 10m 20m)
+vc  vcc gnd dc 1.8
+* u2  inputb plot_v1
+* u1  inputa plot_v1
+* u3  out plot_v1
+x1 A B sum vcc xor
+x2 A B cout vcc and
+* .tran 0.1e-03 100e-03 0e-00
+
+* Control Statements 
+
+    CLOAD cout 0 1f
+    .control
+    
+        shell rm example/esim/rahul_abskl.com_nitk/Half_Adder/data/cout.txt
+        echo "A B OUT"  >> example/esim/rahul_abskl.com_nitk/Half_Adder/data/cout.txt
+        foreach Ain 0 1.8 
+	foreach Bin 0 1.8 
+
+        let out_val = 1.8
+        alter @v1[PWL] = [ 0 $ain ] 
+alter @v2[PWL] = [ 0 $bin ] 
+
+                tran 0.01n 1n
+        run
+        reset 
+        let out_last = v(cout)[length(v(cout))-1]
+        if out_last < 0.9
+           let out_val = 0
+        end
+        echo "$ain $bin $&out_val" >> example/esim/rahul_abskl.com_nitk/Half_Adder/data/cout.txt
+        end
+ 	end
+    
+    quit
+    .endc

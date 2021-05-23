@@ -1,0 +1,12 @@
+.subckt xor A B X vcc
+X0 X a_194_125# gnd gnd sky130_fd_pr__nfet_01v8 w=0.74u l=0.15u
+X1 gnd A a_194_125# gnd sky130_fd_pr__nfet_01v8 w=0.55u l=0.15u
+X2 vcc B a_355_368# vcc sky130_fd_pr__pfet_01v8 w=1.12u l=0.18u
+X3 a_355_368# a_194_125# X vcc sky130_fd_pr__pfet_01v8 w=1.12u l=0.18u
+X4 a_194_125# B gnd gnd sky130_fd_pr__nfet_01v8 w=0.55u l=0.15u
+X5 a_355_368# A vcc vcc sky130_fd_pr__pfet_01v8 w=1.12u l=0.18u
+X6 a_455_87# B X gnd sky130_fd_pr__nfet_01v8 w=0.74u l=0.15u
+X7 vcc A a_161_392# vcc sky130_fd_pr__pfet_01v8 w=1.06u l=0.18u
+X8 gnd A a_455_87# gnd sky130_fd_pr__nfet_01v8 w=0.74u l=0.15u
+X9 a_161_392# B a_194_125# vcc sky130_fd_pr__pfet_01v8 w=1.06u l=0.18u
+.ends

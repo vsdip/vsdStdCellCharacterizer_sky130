@@ -1,0 +1,25 @@
+* /home/saurabh/esim-workspace/cmos_nand_gate/cmos_nand_gate.cir
+.include sky130nm.lib
+.include xor.sub
+.include and.sub
+v1  A gnd pulse(0 1.8 0 0 0 17m 33m)
+v2  B gnd pulse(0 1.8 0 0 0 10m 20m)
+vc  vcc gnd dc 1.8
+* u2  inputb plot_v1
+* u1  inputa plot_v1
+* u3  out plot_v1
+x1 A B sum vcc xor
+x2 A B cout vcc and
+.tran 0.1e-03 100e-03 0e-00
+
+* Control Statements 
+.control
+run
+print allv > plot_data_v.txt
+print alli > plot_data_i.txt
+plot v(A)
+plot v(B)
+plot v(cout)
+plot v(sum)
+.endc
+.end

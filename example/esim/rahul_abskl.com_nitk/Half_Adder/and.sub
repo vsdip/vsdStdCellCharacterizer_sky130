@@ -1,0 +1,10 @@
+.subckt and A B X vcc
+X0 X1 B mid1 gnd sky130_fd_pr__nfet_01v8 w=0.55u l=0.15u
+X1 mid1 A gnd gnd sky130_fd_pr__nfet_01v8 w=0.55u l=0.15u
+
+X2 X1 B vcc vcc sky130_fd_pr__pfet_01v8 w=1.12u l=0.18u
+X3 X1 A vcc vcc sky130_fd_pr__pfet_01v8 w=1.12u l=0.18u
+
+X4 X X1 vcc vcc sky130_fd_pr__pfet_01v8 w=1.12u l=0.18u
+X5 X X1 gnd gnd sky130_fd_pr__nfet_01v8 w=0.55u l=0.15u
+.ends

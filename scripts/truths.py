@@ -100,4 +100,4 @@ class Truths(object):
     #     return str(t)
 
 if __name__ == '__main__':
-    print(Truths(['a',' b', 'c', 'd'], ['not ((a or b) and (c or d) ) ']).truth_table())
+    print(Truths(['a',' b', 'c', 'd'], ['not ((a or b) ^ (c or d) ) ']).truth_table())

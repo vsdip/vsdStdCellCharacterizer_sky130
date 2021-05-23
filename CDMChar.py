@@ -426,13 +426,13 @@ if __name__ == '__main__':
         description="Verifier Tool for NGSPICE SubCkt")
 
     parser.add_argument('-csv', metavar='--csv_file',
-                        help='Enter the user specific xlsx file', type=str, required=True)
+                        help='Enter the user specific csv file', type=str, required=True)
 
-    # Use for Debugging
-    arg_var = parser.parse_args(
-        ['-csv', 'example/esim/dummy_csv_for-VSD_CharScript - Sheet1.csv'])
+    # # Use for Debugging
+    # arg_var = parser.parse_args(
+    #     ['-csv', 'example/esim/dummy_csv_for-VSD_CharScript - Sheet1.csv'])
 
-    # arg_var = parser.parse_args()
+    arg_var = parser.parse_args()
 
     partipants_list = read_users_data(arg_var.csv)
     for user_data in partipants_list:

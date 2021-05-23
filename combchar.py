@@ -251,7 +251,7 @@ def Simulation_env(netlist_pins, spice_card, active_pin, sim_type = 'timing'):
 
     return harness_file, working_folder, pos_unate
 
-def ngspice_lunch(file_loc, working_folder):
+def ngspice_launch(file_loc, working_folder):
     """Launches NGspice and delete old simulation files from the working_folder"""
     
     try:
@@ -417,10 +417,10 @@ if __name__ == '__main__':
 
         # Launching Timing simulation
         timing_cir_file, timing_folder, pos_unate = Simulation_env(pins, card, active_pin, sim_type='timing')
-        ngspice_lunch(timing_cir_file, timing_folder)
+        ngspice_launch(timing_cir_file, timing_folder)
         # Launching Input Capacitance simulation
         caps_cir_file, caps_folder, pos_unate = Simulation_env(pins, card, active_pin, sim_type='input_caps')
-        ngspice_lunch(caps_cir_file, caps_folder)
+        ngspice_launch(caps_cir_file, caps_folder)
         
         undte_value = 'positive_unate' if pos_unate == True else 'negative_unate'
         pin_info = timing.input_pins(caps_folder, active_pin, '1.5') 

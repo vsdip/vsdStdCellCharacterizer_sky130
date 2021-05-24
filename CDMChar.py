@@ -199,7 +199,7 @@ def ngspice_launch(file_loc):
         else:
             print("Successfully created the directory %s " % folder)
 
-    subprocess.call(["ngspice", '-b', '-r rawfile.raw', file_loc])
+    subprocess.call(["ngspice", file_loc])
     print('Finished Simulation')
 
 def gen_control_cmd(act_out_pin):
@@ -278,8 +278,7 @@ def gen_ttable(act_out_pin, func, act_in_pin):
     if act_out_pin in output_pins:
             for base_condition in base_conditions:
                 for index in range(len(mod_input_pins)):
-                    exec("%s = %d" %
-                         (mod_input_pins[index], base_condition[index]))
+                    exec("%s = %d" %(mod_input_pins[index], base_condition[index]))
                 output_dict.update({base_condition: eval(working_func)})
 
     return output_dict
@@ -293,6 +292,7 @@ def gen_alltable_cases():
         act_out_pin = out_func.split('=')[0].replace(' ', '')
         func = out_func.split('=')[1]
         if act_out_pin in output_pins:
+            
             output_dict = gen_ttable(act_out_pin, func, input_pins[0])
             # To get Truth Table results
             file_name = Simulation_env(act_out_pin, func,'truth_tables')
@@ -301,13 +301,13 @@ def gen_alltable_cases():
             # Analyze TruthTable Results
             tt_result = analysis_truthtable(output_dict, act_out_pin, input_pins, out_func)
             results.append(tt_result)
+        
             results.append([[[f'Timing Results for {circuit_name}']]])
             # To get Timing Results
             for in_pin in input_pins:
                 file_name = Simulation_env(act_out_pin, func, 'timing', in_pin)
                 ngspice_launch(file_name)
                 results.append(timing_analyzer(in_pin, act_out_pin))
-
             # print(result)
             
 
@@ -421,6 +421,35 @@ def csv_writer(timing_tables):
             for timing_t in timing_table:
                 writer.writerows(timing_t)
 
+def gen_analog():
+    ckt_analog = cir_txt_temp.split('.control')
+    input_pins_str = ' '.join(input_pins)
+    output_pins_str = ' '.join(output_pins)
+    result_loc = path.join(cell_directory, 'result')
+    harness_file = path.join(cell_directory, f'{circuit_name}.cir')
+    # Not using ps_loc due to hardcopy bug for handling file string as lower case
+    ps_loc = path.join(cell_directory, f'{circuit_name}.ps')
+    img_loc = path.join(result_loc, f'{circuit_name}.png')
+    new_ckt_analog = \
+        f""" 
+        {ckt_analog[0]}
+        .control
+        set hcopydevtype=postscript
+        set hcopypscolor=1
+        set color0=rgb:f/f/f
+        set color1=rgb:0/0/0
+        {ckt_analog[1].split('.endc')[0]}
+        hardcopy {circuit_name}.ps {input_pins_str} {output_pins_str}
+        shell gs -dSAFER -dBATCH -dNOPAUSE -dEPSCrop -r600 -sDEVICE=pngalpha -sOutputFile={img_loc} {circuit_name.lower()}.ps
+        quit
+        .endc
+        .end
+        """
+    with open(harness_file, "w") as file_doc:
+        file_doc.write(new_ckt_analog)
+    
+    return harness_file
+
 if __name__ == '__main__':
     parser = argparse.ArgumentParser(
         description="Verifier Tool for NGSPICE SubCkt")
@@ -437,10 +466,10 @@ if __name__ == '__main__':
     partipants_list = read_users_data(arg_var.csv)
     for user_data in partipants_list:
         cell_directory = path.split(arg_var.csv)[0]
-        student_name = user_data['Student name']
+        student_name = user_data['Student name'].replace(' ', '_')
         email_id = user_data['Email ID']
-        org = user_data['Uni/Org/College']
-        circuit_name = user_data['Circuit Name']
+        org = user_data['Uni/Org/College'].replace(' ', '_')
+        circuit_name = user_data['Circuit Name'].replace(' ', '_')
         circuit_type = user_data['Circuit Type']
         spice_file = user_data['Spice File Name']
         power_volts = user_data['Operating Voltage']
@@ -475,19 +504,26 @@ if __name__ == '__main__':
         cir_file = [file_ for _, _, files in os.walk(cell_directory) for file_ in files if '.cir.out' in file_]
         
         # Get Input Signal sources designator and library path correction
-        cir_txt_temp, signal_sources = analyse_cir_file()
-        
+        if len(cir_file) > 0:
+            cir_txt_temp, signal_sources = analyse_cir_file()
+        else:
+            logging.debug(f"No Cir.out file available for {circuit_name}")
+
         # Modifying .lib file paths in .sub files
         mod_sub_files()
         if 'dig' in circuit_type.lower():
-            logging.debug(f'Digital circuit: {circuit_name}\n')
+            logging.debug(f'Digital circuit: {circuit_name}')
             working_folder = path.join(cell_directory, 'data') # Stores spice generated .txt files
             results = gen_alltable_cases()
+            csv_writer(results)
+            logging.debug(f'Finished -- Digital circuit: {circuit_name}')
         elif 'analog' in circuit_type.lower():
-            logging.debug(f'Analog circuit: {circuit_name}\n')
-            results = gen_alltable_cases()
+            logging.debug(f'Started -- Analog circuit: {circuit_name}')
+            output_func = [f'{output_pins[0]}={input_pins[0]}']
+            cir_file_analog = gen_analog()
+            ngspice_launch(cir_file_analog)
+            logging.debug(f'Finished -- Analog circuit: {circuit_name}')
         # results_str = '\n\n'.join(results)
-        csv_writer(results)
         # with open(f'{cell_directory}/result/truthtable.txt', 'w') as file_obj:
         #     file_obj.seek(0)
         #     file_obj.write(results_str)

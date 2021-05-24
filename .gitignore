@@ -2,5 +2,8 @@
 *.data
 *.plt
 *.out
+!*.cir.out
 *__pycache__
 .history_sta
+*.log
+*.ps

@@ -4,7 +4,7 @@ False,False,True,True,Matched
 False,True,True,True,Matched
 True,False,True,True,Matched
 True,True,False,False,Matched
-Timing Results for 2 input NAND
+Timing Results for 2_input_NAND
 cell_fall: inputa -> out
 Transition Time (Horizontal)/Load Capacitors(Vertical),0.0100000000,0.0230000000,0.0531329000,0.1224740000,0.2823110000,0.6507430000,1.5000000000
 0.0005000000,0.0360545000,0.0402797000,0.0499210000,0.0744283000,0.1365280000,0.2847560000,0.6077270000

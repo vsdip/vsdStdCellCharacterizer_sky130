@@ -4,7 +4,7 @@ False,False,False,False,Matched
 False,True,True,True,Matched
 True,False,True,True,Matched
 True,True,False,False,Matched
-Timing Results for Half Adder
+Timing Results for Half_Adder
 cell_fall: A -> sum
 Transition Time (Horizontal)/Load Capacitors(Vertical),0.0100000000,0.0230000000,0.0531329000,0.1224740000,0.2823110000,0.6507430000,1.5000000000
 0.0005000000,0.0837600000,0.0887700000,0.0989200000,0.1177900000,0.1552100000,0.2391400000,0.4464500000
@@ -83,7 +83,7 @@ False,False,False,False,Matched
 False,True,False,False,Matched
 True,False,False,False,Matched
 True,True,True,True,Matched
-Timing Results for Half Adder
+Timing Results for Half_Adder
 cell_fall: A -> cout
 Transition Time (Horizontal)/Load Capacitors(Vertical),0.0100000000,0.0230000000,0.0531329000,0.1224740000,0.2823110000,0.6507430000,1.5000000000
 0.0005000000,0.0475300000,0.0519700000,0.0617600000,0.0818200000,0.1284400000,0.2446100000,0.5376600000

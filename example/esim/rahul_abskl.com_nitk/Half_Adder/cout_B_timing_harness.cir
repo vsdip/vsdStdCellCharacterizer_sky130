@@ -1,7 +1,7 @@
 
     .include sky130nm.lib
     * /home/saurabh/esim-workspace/cmos_nand_gate/cmos_nand_gate.cir
-* * * .include sky130nm.lib
+* .include sky130nm.lib
 .include example/esim/rahul_abskl.com_nitk/Half_Adder/xor.sub
 .include example/esim/rahul_abskl.com_nitk/Half_Adder/and.sub
 v1  A gnd pulse(0 1.8 0 0 0 17m 33m)

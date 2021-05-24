@@ -1,0 +1,36 @@
+ 
+        * /home/saurabh/desktop/esim/examples/invertingamplifier/invertingamplifier.cir
+
+.include example/esim/sumit__inout.com_iitk/Inverting_Amplifier/lm_741.sub
+r1  in net-_r1-pad2_ 1k
+r3  net-_r1-pad2_ out 5k
+v1  in gnd sine(0 2 50 0 0)
+r4  out gnd 1k
+r2  net-_r2-pad1_ gnd 1k
+* u1  in plot_v1
+* u2  out plot_v1
+v3  net-_x1-pad7_ gnd 12
+v2  gnd net-_x1-pad4_ 12
+x1 ? net-_r1-pad2_ net-_r2-pad1_ net-_x1-pad4_ ? out net-_x1-pad7_ ? lm_741
+.tran 1e-03 100e-03 0e-03
+
+* Control Statements 
+
+        .control
+        set hcopydevtype=postscript
+        set hcopypscolor=1
+        set color0=rgb:f/f/f
+        set color1=rgb:0/0/0
+        
+run
+print allv > plot_data_v.txt
+print alli > plot_data_i.txt
+plot v(in)
+plot v(out)
+
+        hardcopy Inverting_Amplifier.ps in out
+        shell gs -dSAFER -dBATCH -dNOPAUSE -dEPSCrop -r600 -sDEVICE=pngalpha -sOutputFile=example/esim/sumit__inout.com_iitk/Inverting_Amplifier/result/Inverting_Amplifier.png inverting_amplifier.ps
+        quit
+        .endc
+        .end
+        

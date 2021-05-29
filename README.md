@@ -144,7 +144,7 @@ Enter command into terminal: `$ python3 dff.py -lef example/sky130_fd_sc_hd__dfx
   <img src="images/synthesis.png" alt="config" width="300"/>
 
 ## Contact
-* [Harsh Shukla](harshsrigh@gmail.com), MS Analog and Mixed Signal Design, Arizona State University
+* [Harsh Shukla](harshsrigh@gmail.com), pursuing Masters at Arizona State University
 
 ## Acknowledgement
 * Kunal Ghosh, Co-founder, VSD Corp. Pvt. Ltd
